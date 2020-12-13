@@ -117,7 +117,7 @@ describe(`contacts endpoints`, () => {
         expect(res.status).toBe(422);
       });
 
-      it('retuns an error message', async () => {
+      it('returns an error message', async () => {
         expect(res.body).toHaveProperty('errorMessage');
         expect(Array.isArray(res.body.errorsByField)).toBe(true);
         expect(
@@ -140,7 +140,7 @@ describe(`contacts endpoints`, () => {
         expect(res.status).toBe(422);
       });
 
-      it('retuns an error message', async () => {
+      it('returns an error message', async () => {
         expect(res.body).toHaveProperty('errorMessage');
       });
     });
@@ -159,7 +159,7 @@ describe(`contacts endpoints`, () => {
         expect(res.status).toBe(422);
       });
 
-      it('retuns an error message', async () => {
+      it('returns an error message', async () => {
         expect(res.body).toHaveProperty('errorMessage');
         expect(Array.isArray(res.body.errorsByField)).toBe(true);
         expect(
@@ -211,7 +211,7 @@ describe(`contacts endpoints`, () => {
         expect(res.status).toBe(422);
       });
 
-      it('retuns an error message', async () => {
+      it('returns an error message', async () => {
         expect(res.body).toHaveProperty('errorMessage');
         expect(Array.isArray(res.body.errorsByField)).toBe(true);
         expect(
@@ -270,7 +270,7 @@ describe(`contacts endpoints`, () => {
         expect(res.status).toBe(422);
       });
 
-      it('retuns an error message', async () => {
+      it('returns an error message', async () => {
         expect(res.body).toHaveProperty('errorMessage');
         expect(Array.isArray(res.body.errorsByField)).toBe(true);
         expect(

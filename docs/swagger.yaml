@@ -12,6 +12,8 @@ produces:
 tags:
   - name: 'contact'
     description: 'operations on contacts'
+  - name: 'user'
+    description: 'operations on users'
 paths:
   /contacts:
     get:
@@ -160,6 +162,45 @@ paths:
           description: 'Unauthorized'
         '404':
           description: 'Contact not found'
+
+  /users:
+    post:
+      tags:
+        - 'user'
+      summary: 'Add a new user'
+      description: ''
+      parameters:
+        - in: 'body'
+          name: 'user'
+          description: 'User object that needs to be added in DB'
+          required: true
+          schema:
+            allOf:
+              - $ref: '#/definitions/UserEditableAttributes'
+              - type: 'object'
+                required:
+                  - 'email'
+      responses:
+        '201':
+          description: 'Created'
+          schema:
+            type: 'object'
+            $ref: '#/definitions/User'
+
+        '400':
+          description: 'Invalid input. The user object was not provided'
+          schema:
+            type: 'object'
+            properties:
+              errorMessage:
+                type: 'string'
+        '422':
+          description: 'Invalid input. The user object provided is not valid'
+          schema:
+            type: 'object'
+            $ref: "#/definitions/ValidationError"
+        '401':
+          description: 'Unauthorized'
 definitions:
   ValidationError:
     type: 'object'
@@ -192,6 +233,19 @@ definitions:
         type: 'string'
         example: 'john.doe@gmail.com'
 
+  UserEditableAttributes:
+    type: 'object'
+    properties:
+      email:
+        type: 'string'
+        example: 'john.doe@gmail.com'
+      password:
+        type: 'string'
+        example: '2TYVTYUF11@@%yuftrdesszejhvgez'
+      password_confirmation:
+        type: 'string'
+        example: '2TYVTYUF11@@%yuftrdesszejhvgez'
+
   ContactSimplified:
     type: 'object'
     properties:
@@ -213,3 +267,11 @@ definitions:
             type: 'integer'
             format: 'int64'
       - $ref: '#/definitions/ContactEditableAttributes'
+  User:
+    allOf:
+      - type: 'object'
+        properties:
+          id:
+            type: 'integer'
+            format: 'int64'
+      - $ref: '#/definitions/UserEditableAttributes'

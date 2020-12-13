@@ -8,6 +8,7 @@ const handleValidationError = require('./middlewares/handleValidationError');
 const handleRecordNotFoundError = require('./middlewares/handleRecordNotFoundError');
 
 const app = express();
+app.set('x-powered-by', false);
 
 // docs
 if (!inProdEnv && !inTestEnv) {
@@ -24,7 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 require('./routes')(app);
 
 // post-route middlewares
-app.set('x-powered-by', false);
 app.use(handleRecordNotFoundError);
 app.use(handleValidationError);
 app.use(handleServerInternalError);

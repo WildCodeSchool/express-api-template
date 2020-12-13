@@ -18,7 +18,7 @@ Install Docker and docker-compose on your OS.
 ### Run the app
 
 ```sh
-docker-compose up
+npm run dev
 ```
 That will install and run the app with all its dependencies (including the DB) in isolated containers. With this single command, you will have a fully functionnal and persistant API listening by default on [localhost:5000](http://localhost:5000). 
 
@@ -90,8 +90,4 @@ You can access the docs, available by default at [localhost:5000/api-docs](http:
 
 You can modify the docs by changing the `docs/swagger.yaml` file.
 
-# Deployment
-
-See  : 
-- [(FR) Guide : How to host this application with CapRover on a Linux machine](DEPLOYMENT_GUIDE_FR.md)
 
