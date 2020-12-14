@@ -1,3 +1,4 @@
+const argon2 = require('argon2');
 const { ValidationError, RecordNotFoundError } = require('../error-types');
 const db = require('../db');
 
@@ -11,33 +12,37 @@ const findOne = async (id, failIfNotFound = true) => {
 };
 
 const emailAlreadyExists = async (email) => {
-  console.log('checking email existence for', email);
-  // TODO
+  const rows = await db.query(`SELECT * FROM users WHERE email = ?`, [email]);
+  if (rows.length) {
+    return true;
+  }
+  return false;
 };
 
 const validate = async (attributes) => {
-  console.log('validating user attributes : ', attributes);
-  const valid = false;
-  if (!valid) {
-    throw new ValidationError();
+  const { password, password_confirmation, email } = attributes;
+  if (password && password_confirmation) {
+    if (password === password_confirmation) {
+      return !(await emailAlreadyExists(email));
+    }
   }
-  // TODO
+  throw new ValidationError();
 };
 
-const hashPassword = async (user) => {
-  console.log('hashing password for user : ', user);
-  // TODO
-};
+const hashPassword = async (user) => argon2.hash(user.password);
 
 const create = async (newAttributes) => {
-  console.log('creating user : ', newAttributes);
-  // TODO
+  await validate(newAttributes);
+  const { email } = newAttributes;
+  const encrypted_password = await hashPassword(newAttributes);
+  return db.query(
+    'INSERT INTO users (email, encrypted_password) VALUES (?, ?)',
+    [email, encrypted_password]
+  );
 };
 
 const verifyPassword = async (user, plainPassword) => {
-  console.log('verifying password for user : ', user);
-  console.log('against non-encrypted password : ', plainPassword);
-  // TODO
+  return argon2.verify(user.encrypted_password, plainPassword);
 };
 
 module.exports = {
