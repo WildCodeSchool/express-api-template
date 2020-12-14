@@ -21,9 +21,11 @@ const emailAlreadyExists = async (email) => {
 
 const validate = async (attributes) => {
   const { password, password_confirmation, email } = attributes;
-  if (password && password_confirmation) {
+  if (email && password && password_confirmation) {
     if (password === password_confirmation) {
-      return !(await emailAlreadyExists(email));
+      const emailExists = await emailAlreadyExists(email);
+      if (emailExists) throw new ValidationError();
+      return true;
     }
   }
   throw new ValidationError();
@@ -35,10 +37,11 @@ const create = async (newAttributes) => {
   await validate(newAttributes);
   const { email } = newAttributes;
   const encrypted_password = await hashPassword(newAttributes);
-  return db.query(
+  const res = await db.query(
     'INSERT INTO users (email, encrypted_password) VALUES (?, ?)',
     [email, encrypted_password]
   );
+  return { email, id: res.insertId };
 };
 
 const verifyPassword = async (user, plainPassword) => {

@@ -1,4 +1,6 @@
+const User = require('../models/user');
+
 module.exports.handlePost = async (req, res) => {
-  // TODO
-  return res.status(500).send('not implemented');
+  const user = await User.create(req.body);
+  return res.status(201).send(user);
 };
