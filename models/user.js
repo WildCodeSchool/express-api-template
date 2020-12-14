@@ -6,7 +6,16 @@ const findOne = async (id, failIfNotFound = true) => {
   if (rows.length) {
     return rows[0];
   }
-  if (failIfNotFound) throw new RecordNotFoundError('users', id);
+  if (failIfNotFound) throw new RecordNotFoundError();
+  return null;
+};
+
+const findByEmail = async (email, failIfNotFound = true) => {
+  const rows = await db.query(`SELECT * FROM users WHERE email = ?`, [email]);
+  if (rows.length) {
+    return rows[0];
+  }
+  if (failIfNotFound) throw new RecordNotFoundError();
   return null;
 };
 
@@ -18,19 +27,14 @@ const emailAlreadyExists = async (email) => {
 const validate = async (attributes) => {
   console.log('validating user attributes : ', attributes);
   const valid = false;
+  // TODO
   if (!valid) {
     throw new ValidationError();
   }
-  // TODO
 };
 
 const hashPassword = async (user) => {
   console.log('hashing password for user : ', user);
-  // TODO
-};
-
-const create = async (newAttributes) => {
-  console.log('creating user : ', newAttributes);
   // TODO
 };
 
@@ -40,11 +44,17 @@ const verifyPassword = async (user, plainPassword) => {
   // TODO
 };
 
+const create = async (newAttributes) => {
+  console.log('creating user : ', newAttributes);
+  // TODO
+};
+
 module.exports = {
   validate,
   create,
   emailAlreadyExists,
   findOne,
+  findByEmail,
   hashPassword,
   verifyPassword,
 };
