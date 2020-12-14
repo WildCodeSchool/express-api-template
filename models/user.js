@@ -48,7 +48,17 @@ const verifyPassword = async (user, plainPassword) => {
   return argon2.verify(user.encrypted_password, plainPassword);
 };
 
+const findByEmail = async (email, failIfNotFound = true) => {
+  const rows = await db.query(`SELECT * FROM users WHERE email = ?`, [email]);
+  if (rows.length) {
+    return rows[0];
+  }
+  if (failIfNotFound) throw new RecordNotFoundError();
+  return null;
+};
+
 module.exports = {
+  findByEmail,
   validate,
   create,
   emailAlreadyExists,
