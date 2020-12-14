@@ -44,8 +44,8 @@ const create = async (newAttributes) => {
   return { email, id: res.insertId };
 };
 
-const verifyPassword = async (user, plainPassword) => {
-  return argon2.verify(user.encrypted_password, plainPassword);
+const verifyPassword = async (user, password) => {
+  return argon2.verify(user.encrypted_password, password);
 };
 
 const findByEmail = async (email, failIfNotFound = true) => {

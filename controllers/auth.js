@@ -1,7 +1,8 @@
 const User = require('../models/user');
 
 module.exports.login = async (req, res) => {
-  const user = User.findByEmail(req.body.email);
+  console.log(req.body);
+  const user = await User.findByEmail(req.body.email, false);
   if (user && (await User.verifyPassword(user, req.body.password))) {
     req.session.userId = user.id;
     req.session.save((err) => {
@@ -9,6 +10,6 @@ module.exports.login = async (req, res) => {
       return res.send(200);
     });
   } else {
-    res.send(401);
+    res.sendStatus(401);
   }
 };
